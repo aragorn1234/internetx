@@ -1,0 +1,308 @@
+###
+
+####################################################################################################################
+## generate JWT tokens for users admin, tester and developer
+####################################################################################################################
+
+### user 1 => admin
+### token for user eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBpbnRlcm5ldHguY29tIiwicm9sZXMiOiJ7ICAnaWQnIDogMSwgICd1c2VySWQnIDogMSwgICdyb2xlQWRtaW4nIDogdHJ1ZSwgICdyb2xlRGV2ZWxvcCcgOiBmYWxzZX0iLCJpYXQiOjE2ODA2MjkwNTYsImV4cCI6MTY4MTIzMzg1Nn0.9WOJ92EcOzHe8-IKqkhqGBdxi9kEk56ghjusqZh2gJfFql8fIIA3JyJGYgxGsDviMIcMdK6JpR5U13doPd1giQ
+
+
+POST https://localhost:8080/login
+Content-Type: application/json
+accept:  application/json,  */*
+
+{
+"email": "admin@internetx.com",
+"password": "oW663@ZFRhV1"
+
+}
+
+<> 2023-04-02T110746.200.json
+
+
+
+### user 2 => tester
+### token for user eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXJAaW50ZXJuZXR4LmNvbSIsInJvbGVzIjoieyAgJ2lkJyA6IDMsICAndXNlcklkJyA6IDMsICAncm9sZUFkbWluJyA6IGZhbHNlLCAgJ3JvbGVEZXZlbG9wJyA6IGZhbHNlfSIsImlhdCI6MTY4MDYyOTA4MiwiZXhwIjoxNjgxMjMzODgyfQ.-YPA9MMNu6bTCEEhhkdFuXC8M06ZxMwcNoiLTJFwhwuLNwoJ91LE6f7YrUJFEkbqNPOZVtY2qRMlZ1UXd4wcNw
+
+###
+POST https://localhost:8080/login
+Content-Type: application/json
+accept:  application/json,  */*
+
+{
+"email": "tester@internetx.com",
+"password": "oW663@ZFRhV1"
+
+}
+
+<> 2023-04-02T110802.200.json
+
+### user 3 => developer
+### token for user eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkZXZlbG9wZXJAaW50ZXJuZXR4LmNvbSIsInJvbGVzIjoieyAgJ2lkJyA6IDIsICAndXNlcklkJyA6IDIsICAncm9sZUFkbWluJyA6IGZhbHNlLCAgJ3JvbGVEZXZlbG9wJyA6IHRydWV9IiwiaWF0IjoxNjgwNjI5MTA2LCJleHAiOjE2ODEyMzM5MDZ9.1HAb9_9kjhcQR47ozwrfEjpeNK7IG9V_Jo0MjG2PE8JEsjBScdKIdfw48Lb29HiaGcmH_ZsLp436aGde2B-upg
+
+###
+POST https://localhost:8080/login
+Content-Type: application/json
+accept:  application/json,  */*
+
+{
+  "email": "developer@internetx.com",
+  "password": "oW663@ZFRhV1"
+
+}
+
+<> 2023-04-02T110810.200.json
+
+##############################################Mustermann######################################################################
+## check post user routes
+####################################################################################################################
+
+### test with role => should work
+### id gets ignored as well as role id
+
+POST https://localhost:8080/user
+Content-Type: application/json
+accept:  application/json,  */*
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBpbnRlcm5ldHguY29tIiwicm9sZXMiOiJ7ICAnaWQnIDogMSwgICd1c2VySWQnIDogMSwgICdyb2xlQWRtaW4nIDogdHJ1ZSwgICdyb2xlRGV2ZWxvcCcgOiBmYWxzZX0iLCJpYXQiOjE2ODA2MjkwNTYsImV4cCI6MTY4MTIzMzg1Nn0.9WOJ92EcOzHe8-IKqkhqGBdxi9kEk56ghjusqZh2gJfFql8fIIA3JyJGYgxGsDviMIcMdK6JpR5U13doPd1giQ
+
+{
+  "id": 1,
+  "password": "oW663@ZFRhV1",
+  "login": "mustermann",
+  "fname": "Max",
+  "lname": "Mustermann",
+  "email": "mustermann@internetx.com",
+  "role": {
+    "id": 1,
+    "user_id": 1,
+    "role_admin": true,
+    "role_develop": false,
+    "role_cctld": false,
+    "role_gtld": false,
+    "role_billing": false,
+    "role_registry": false,
+    "role_purchase_read": false,
+    "role_purchase_write": false,
+    "role_sale_write": false,
+    "role_sql": true
+
+
+
+
+  }
+
+}
+
+### test without role => should fail
+### id gets ignored as well as role id, user_id
+POST https://localhost:8080/user
+Content-Type: application/json
+accept:  application/json,  */*
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBpbnRlcm5ldHguY29tIiwicm9sZXMiOiJ7ICAnaWQnIDogMSwgICd1c2VySWQnIDogMSwgICdyb2xlQWRtaW4nIDogdHJ1ZSwgICdyb2xlRGV2ZWxvcCcgOiBmYWxzZX0iLCJpYXQiOjE2ODA2MjkwNTYsImV4cCI6MTY4MTIzMzg1Nn0.9WOJ92EcOzHe8-IKqkhqGBdxi9kEk56ghjusqZh2gJfFql8fIIA3JyJGYgxGsDviMIcMdK6JpR5U13doPd1giQ
+
+{
+  "id": 1,
+  "password": "oW663@ZFRhV1",
+  "login": "mustermann",
+  "fname": "Max",
+  "lname": "Mustermann",
+  "email": "mustermann@internetx.com"
+
+}
+###
+### role not complete => should work
+### id gets ignored as well as role id, user_id
+
+POST https://localhost:8080/user
+Content-Type: application/json
+accept:  application/json,  */*
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBpbnRlcm5ldHguY29tIiwicm9sZXMiOiJ7ICAnaWQnIDogMSwgICd1c2VySWQnIDogMSwgICdyb2xlQWRtaW4nIDogdHJ1ZSwgICdyb2xlRGV2ZWxvcCcgOiBmYWxzZX0iLCJpYXQiOjE2ODA2MjkwNTYsImV4cCI6MTY4MTIzMzg1Nn0.9WOJ92EcOzHe8-IKqkhqGBdxi9kEk56ghjusqZh2gJfFql8fIIA3JyJGYgxGsDviMIcMdK6JpR5U13doPd1giQ
+
+{
+  "id": 1,
+  "password": "oW663@ZFRhV1",
+  "login": "superadmin",
+  "fname": "Max",
+  "lname": "SpuerAdmin",
+  "email": "superadmin@internetx.com",
+  "role": {
+    "id": 1,
+    "user_id": 1,
+    "role_admin": true,
+    "role_develop": false
+
+  }
+
+}
+
+####################################################################################################################
+## check put route => three cases user himself, user with role admin and user nor himself or has role admin
+####################################################################################################################
+
+
+### check if user with role developer can update himiself => should work
+
+###
+PUT https://localhost:8080/user/2 HTTP/1.1
+Content-Type: application/json
+accept:  application/json,  */*
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkZXZlbG9wZXJAaW50ZXJuZXR4LmNvbSIsInJvbGVzIjoieyAgJ2lkJyA6IDIsICAndXNlcklkJyA6IDIsICAncm9sZUFkbWluJyA6IGZhbHNlLCAgJ3JvbGVEZXZlbG9wJyA6IHRydWV9IiwiaWF0IjoxNjgwNjI5MTA2LCJleHAiOjE2ODEyMzM5MDZ9.1HAb9_9kjhcQR47ozwrfEjpeNK7IG9V_Jo0MjG2PE8JEsjBScdKIdfw48Lb29HiaGcmH_ZsLp436aGde2B-upg
+
+{
+  "id": 2,
+  "password": "oW663@ZFRhV1",
+  "login": "developer",
+  "fname": "Peter",
+  "lname": "EntwicklerTOKEN",
+  "email": "developer@internetx.com"
+}
+
+### check if user with role developer can update user with id 3 => should fail
+
+###
+PUT https://localhost:8080/user/3 HTTP/1.1
+Content-Type: application/json
+accept:  application/json,  */*
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkZXZlbG9wZXJAaW50ZXJuZXR4LmNvbSIsInJvbGVzIjoieyAgJ2lkJyA6IDIsICAndXNlcklkJyA6IDIsICAncm9sZUFkbWluJyA6IGZhbHNlLCAgJ3JvbGVEZXZlbG9wJyA6IHRydWV9IiwiaWF0IjoxNjgwNjI5MTA2LCJleHAiOjE2ODEyMzM5MDZ9.1HAb9_9kjhcQR47ozwrfEjpeNK7IG9V_Jo0MjG2PE8JEsjBScdKIdfw48Lb29HiaGcmH_ZsLp436aGde2B-upg
+
+{
+  "id": 3,
+  "password": "oW663@ZFRhV1",
+  "login": "developer",
+  "fname": "Peter",
+  "lname": "Entwickler",
+  "email": "developer@internetx.com"
+}
+
+
+
+
+
+### check if admin can update any user
+
+###
+PUT https://localhost:8080/user/1 HTTP/1.1
+Content-Type: application/json
+accept:  application/json,  */*
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBpbnRlcm5ldHguY29tIiwicm9sZXMiOiJ7ICAnaWQnIDogMSwgICd1c2VySWQnIDogMSwgICdyb2xlQWRtaW4nIDogdHJ1ZSwgICdyb2xlRGV2ZWxvcCcgOiBmYWxzZX0iLCJpYXQiOjE2ODA2MjkwNTYsImV4cCI6MTY4MTIzMzg1Nn0.9WOJ92EcOzHe8-IKqkhqGBdxi9kEk56ghjusqZh2gJfFql8fIIA3JyJGYgxGsDviMIcMdK6JpR5U13doPd1giQ
+
+{
+  "id": 1,
+  "password": "oW663@ZFRhV1",
+  "login": "admin",
+  "fname": "Max",
+  "lname": "AdminTOKEN",
+  "email": "admin@internetx.com",
+  "role": {
+    "id": 1,
+    "user_id": 1,
+    "role_admin": true,
+    "role_develop": false,
+    "role_cctld": false,
+    "role_gtld": false,
+    "role_billing": false,
+    "role_registry": false,
+    "role_purchase_read": false,
+    "role_purchase_write": false,
+    "role_sale_write": false,
+    "role_sql": true
+
+
+
+
+  }
+}
+
+
+### try to update user 1 (admin) with token from user 2 (tester) => should not work
+
+###
+PUT https://localhost:8080/user/1 HTTP/1.1
+Content-Type: application/json
+accept:  application/json,  */*
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXJAaW50ZXJuZXR4LmNvbSIsInJvbGVzIjoieyAgJ2lkJyA6IDMsICAndXNlcklkJyA6IDMsICAncm9sZUFkbWluJyA6IGZhbHNlLCAgJ3JvbGVEZXZlbG9wJyA6IGZhbHNlfSIsImlhdCI6MTY4MDYyOTA4MiwiZXhwIjoxNjgxMjMzODgyfQ.-YPA9MMNu6bTCEEhhkdFuXC8M06ZxMwcNoiLTJFwhwuLNwoJ91LE6f7YrUJFEkbqNPOZVtY2qRMlZ1UXd4wcNw
+
+{
+  "id": 1,
+  "password": "oW663@ZFRhV1",
+  "login": "admin",
+  "fname": "Max",
+  "lname": "Admin",
+  "email": "admin@internetx.com",
+  "role": {
+    "id": 1,
+    "user_id": 1,
+    "role_admin": true,
+    "role_develop": false,
+    "role_cctld": false,
+    "role_gtld": false,
+    "role_billing": false,
+    "role_registry": false,
+    "role_purchase_read": false,
+    "role_purchase_write": false,
+    "role_sale_write": false,
+    "role_sql": true
+
+
+
+
+  }
+}
+
+
+
+
+####################################################################################################################
+## check get route
+####################################################################################################################
+
+###
+### amdin can see any user
+
+###
+GET https://localhost:8080/user/3
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBpbnRlcm5ldHguY29tIiwicm9sZXMiOiJ7ICAnaWQnIDogMSwgICd1c2VySWQnIDogMSwgICdyb2xlQWRtaW4nIDogdHJ1ZSwgICdyb2xlRGV2ZWxvcCcgOiBmYWxzZX0iLCJpYXQiOjE2ODA2MjkwNTYsImV4cCI6MTY4MTIzMzg1Nn0.9WOJ92EcOzHe8-IKqkhqGBdxi9kEk56ghjusqZh2gJfFql8fIIA3JyJGYgxGsDviMIcMdK6JpR5U13doPd1giQ
+
+<> 2023-04-04T110910.200.json
+<> 2023-04-04T110817.200.json
+<> 2023-04-04T110521.200.json
+<> 2023-04-04T110328.200.json
+<> 2023-04-03T185752.200.json
+<> 2023-04-02T112228.200.json
+
+###
+### developer can see himself
+
+GET https://localhost:8080/user/2
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkZXZlbG9wZXJAaW50ZXJuZXR4LmNvbSIsInJvbGVzIjoieyAgJ2lkJyA6IDIsICAndXNlcklkJyA6IDIsICAncm9sZUFkbWluJyA6IGZhbHNlLCAgJ3JvbGVEZXZlbG9wJyA6IHRydWV9IiwiaWF0IjoxNjgwNjI5MTA2LCJleHAiOjE2ODEyMzM5MDZ9.1HAb9_9kjhcQR47ozwrfEjpeNK7IG9V_Jo0MjG2PE8JEsjBScdKIdfw48Lb29HiaGcmH_ZsLp436aGde2B-upg
+
+<> 2023-04-03T185759.200.json
+<> 2023-04-02T112244.200.json
+
+
+###
+### developer can not see user 1
+
+GET https://localhost:8080/user/1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkZXZlbG9wZXJAaW50ZXJuZXR4LmNvbSIsInJvbGVzIjoieyAgJ2lkJyA6IDIsICAndXNlcklkJyA6IDIsICAncm9sZUFkbWluJyA6IGZhbHNlLCAgJ3JvbGVEZXZlbG9wJyA6IHRydWV9IiwiaWF0IjoxNjgwNjI5MTA2LCJleHAiOjE2ODEyMzM5MDZ9.1HAb9_9kjhcQR47ozwrfEjpeNK7IG9V_Jo0MjG2PE8JEsjBScdKIdfw48Lb29HiaGcmH_ZsLp436aGde2B-upg
+
+####################################################################################################################
+## check delete route
+####################################################################################################################
+
+### admin can not delete himself
+DELETE https://localhost:8080/user/1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBpbnRlcm5ldHguY29tIiwicm9sZXMiOiJ7ICAnaWQnIDogMSwgICd1c2VySWQnIDogMSwgICdyb2xlQWRtaW4nIDogdHJ1ZSwgICdyb2xlRGV2ZWxvcCcgOiBmYWxzZX0iLCJpYXQiOjE2ODA2MjkwNTYsImV4cCI6MTY4MTIzMzg1Nn0.9WOJ92EcOzHe8-IKqkhqGBdxi9kEk56ghjusqZh2gJfFql8fIIA3JyJGYgxGsDviMIcMdK6JpR5U13doPd1giQ
+
+### admin can delete user 4
+DELETE https://localhost:8080/user/4
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBpbnRlcm5ldHguY29tIiwicm9sZXMiOiJ7ICAnaWQnIDogMSwgICd1c2VySWQnIDogMSwgICdyb2xlQWRtaW4nIDogdHJ1ZSwgICdyb2xlRGV2ZWxvcCcgOiBmYWxzZX0iLCJpYXQiOjE2ODA2MjkwNTYsImV4cCI6MTY4MTIzMzg1Nn0.9WOJ92EcOzHe8-IKqkhqGBdxi9kEk56ghjusqZh2gJfFql8fIIA3JyJGYgxGsDviMIcMdK6JpR5U13doPd1giQ
+
+
+### developer can not delete any user
+DELETE https://localhost:8080/user/1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkZXZlbG9wZXJAaW50ZXJuZXR4LmNvbSIsInJvbGVzIjoieyAgJ2lkJyA6IDIsICAndXNlcklkJyA6IDIsICAncm9sZUFkbWluJyA6IGZhbHNlLCAgJ3JvbGVEZXZlbG9wJyA6IHRydWV9IiwiaWF0IjoxNjgwNjI5MTA2LCJleHAiOjE2ODEyMzM5MDZ9.1HAb9_9kjhcQR47ozwrfEjpeNK7IG9V_Jo0MjG2PE8JEsjBScdKIdfw48Lb29HiaGcmH_ZsLp436aGde2B-upg
+
+
+
